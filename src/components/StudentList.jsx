@@ -22,8 +22,9 @@ export const StudentList = () => {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState(false);
   const [page, setPage] = useState(1);
-  const [limit] = useState(5);
+  const [limit] = useState(10);
   const [total, setTotal] = useState(0);
+  const [bool, setBool] = useState(false)
 
   const getStudent = () => {
     axios.get(`http://localhost:8000/students?limit=${limit}&page=${page}`).then(({ data }) => {
@@ -76,12 +77,13 @@ export const StudentList = () => {
   };
 
   const handleDelete = async (id) => {
+    setBool(!bool)
     await axios.delete(`http://localhost:8000/students/${id}`);
   }
 
   useEffect(() => {
     getStudent();
-  }, [handleDelete]);
+  }, [page, bool]);
 
   useEffect(() => {
     totalStudentCount()
